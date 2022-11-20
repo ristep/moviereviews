@@ -6,14 +6,17 @@ from django.db import IntegrityError
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from .forms import UserCreateForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def about(request):
     return HttpResponse("About Page!")
 
+@login_required
 def logoutaccount(request):
    logout(request)
    return redirect('home')
+
 
 def signup(request):
     email = request.GET.get("email")
