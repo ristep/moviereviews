@@ -1,22 +1,23 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.contrib.auth import login
 from django.shortcuts import redirect
 from django.db import IntegrityError
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout, authenticate
 from .forms import UserCreateForm
 
 # Create your views here.
 def about(request):
     return HttpResponse("About Page!")
 
+def logoutaccount(request):
+   logout(request)
+   return redirect('home')
 
 def signup(request):
     email = request.GET.get("email")
     return render(request, "signup.html", {"email": email})
-
 
 def signupaccount(request):
    if request.method == 'GET':
@@ -32,3 +33,14 @@ def signupaccount(request):
             return render(request,'signupaccount.html', {'form':UserCreateForm,'error':'Username already taken. Choose new username.'})
       else:
          return render( request, 'signupaccount.html', {'form':UserCreateForm, 'error':'Passwords do not match'} )  
+
+def loginaccount(request):
+   if request.method == 'GET':
+      return render(request, 'loginaccount.html', {'form':AuthenticationForm})
+   else:
+      user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+      if user is None:
+         return render(request,'loginaccount.html', {'form': AuthenticationForm(), 'error': 'username and password do not match'})
+      else:
+         login(request,user)
+         return redirect('home')
