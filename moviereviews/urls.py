@@ -17,11 +17,15 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
+from movie import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('movie.urls')),
-    path('news/', include('news.urls')),
+   path('home/', views.home, name='home'),
+   path('', views.home, name='home'),
+   path('admin/', admin.site.urls),
+   path('news/', include('news.urls')),
+   path('movie/', include('movie.urls')),
+   path('accounts/', include('accounts.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
