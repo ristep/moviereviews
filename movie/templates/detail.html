@@ -18,6 +18,7 @@
 						{% endif %}
 						{% if user.is_authenticated %}
 							<a href="{% url 'createreview' movie.id %}" class="btn btn-primary">Add Review</a>
+							<a href="{% url 'updatemovie'  movie.id %}" class="btn btn-primary">Update movie</a>
 						{% endif %}
 					</p>
 					<hr/>

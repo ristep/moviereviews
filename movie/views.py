@@ -1,9 +1,10 @@
 from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import UpdateView
 
 from .models import Movie, Review
-from .forms import ReviewForm
+from .forms import ReviewForm, MovieForm
 
 
 def home(request):
@@ -14,6 +15,19 @@ def home(request):
       movies = Movie.objects.all()
    return render(request, "home.html", {"searchTerm": searchTerm, "movies": movies})
 
+def updatemovie(request, movie_id):
+   movie = get_object_or_404( Movie, pk=movie_id)
+   if request.method == "GET":
+      form = MovieForm(movie)
+      return render(request, 'updatemovie.html', {'movie': movie, 'form': form  })
+
+   #    form = MovieForm(instance = movie)
+   #    return render( request, 'updatemovie.html', { 'movie': movie, 'form': form })
+
+# class AuthorUpdate(UpdateView):
+#     model = Author
+#     fields = ['name']
+#     template_name_suffix = '_update_form'
 
 def detail(request, movie_id):
    movie = get_object_or_404(Movie, pk=movie_id)

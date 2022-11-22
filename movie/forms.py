@@ -1,11 +1,12 @@
 # models/forms.py
 
-from django.forms import ModelForm, Textarea
-from .models import Review
+# from django.forms import ModelForm, Form, Textarea
+from django import forms
+from .models import Movie, Review
 
-class ReviewForm(ModelForm):
+class ReviewForm(forms.ModelForm):
    def __init__(self, *args, **kwargs):
-      super(ModelForm, self).__init__(*args, **kwargs)
+      super(forms.ModelForm, self).__init__(*args, **kwargs)
       self.fields['text'].widget.attrs.update( {'class': 'form-control'})
       self.fields['watchAgain'].widget.attrs.update({'class': 'form-check-input'})
  
@@ -16,5 +17,26 @@ class ReviewForm(ModelForm):
          'watchAgain': ('Watch Again')
       }
       widgets = {
-         'text': Textarea(attrs={'rows': 4}),
+         'text': forms.Textarea(attrs={'rows': 4}),
       }
+ 
+class MovieForm(forms.Form):
+   title = forms.CharField()
+   description = forms.CharField()
+   url = forms.URLField()
+   class Meta:
+      model = Movie 
+      fields = [ 'title', 'description', 'url']
+      labels = {
+         'title': ('Movie title'),
+         'description': ('The description'),
+         'url': ('External movie URL'),
+      }
+
+# class ContactForm(Form):
+#     name = forms.CharField()
+#     message = forms.CharField(widget=forms.Textarea)
+
+#     def send_email(self):
+#         # send email using the self.cleaned_data dictionary
+#         pass
